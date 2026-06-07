@@ -4,11 +4,10 @@ RUN apk add --no-cache python3 make g++
 
 WORKDIR /app
 
-# Copy everything - cache invalidates when source changes
+# Build ID: 1780838503
 COPY apps/api/ .
 
-# Verify key routes exist
-RUN grep -q "/ping" src/index.ts && echo "OK: ping route found" || (echo "MISSING ping!" && exit 1)
+RUN grep -q "/ping" src/index.ts && echo "OK: ping found" || (echo "MISSING!" && exit 1)
 
 RUN npm install && npm run build && npm prune --omit=dev
 
