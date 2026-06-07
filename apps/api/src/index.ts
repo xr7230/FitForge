@@ -315,6 +315,10 @@ app.get('/api/exercises', (_req: Request, res: Response) => {
   res.json({ exercises: planGenerator.getFullLibrary() });
 });
 
+app.get('/health', (_req: Request, res: Response) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 app.get('/', (_req: Request, res: Response) => {
   res.json({ message: 'FitForge API is running!' });
 });

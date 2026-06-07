@@ -1,4 +1,4 @@
-const USE_SQLITE = !process.env.DATABASE_URL;
+﻿const USE_SQLITE = !process.env.DATABASE_URL;
 
 let _pool: any;
 let _redis: any;
@@ -191,6 +191,18 @@ if (USE_SQLITE) {
         )
       `);
       await _pool.query("CREATE INDEX IF NOT EXISTS idx_measurements_user ON body_measurements(user_id, measurement_date DESC)");
+      await _pool.query(`
+        CREATE TABLE IF NOT EXISTS fitness_goals (
+          id SERIAL PRIMARY KEY, user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+          title VARCHAR(255) NOT NULL, goal_type VARCHAR(50) NOT NULL,
+          target_value REAL NOT NULL, current_value REAL DEFAULT 0,
+          unit VARCHAR(50), deadline DATE,
+          achieved INTEGER DEFAULT 0, achieved_at TIMESTAMP,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+      await _pool.query("CREATE INDEX IF NOT EXISTS idx_goals_user ON fitness_goals(user_id, created_at DESC)");
+
       console.log("PostgreSQL 数据库初始化成功");
     } catch (error) {
       console.error("数据库初始化失败:", error);

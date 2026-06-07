@@ -78,7 +78,7 @@ export function registerBuddyRoutes(app: any, authMiddleware: any) {
 
       // Total workouts
       const totalResult = await pool.query(
-        "SELECT COUNT(*) as cnt FROM workout_feedback WHERE user_id = ?",
+        "SELECT COUNT(*) as cnt FROM workout_feedback WHERE user_id = $1",
         [userId]
       );
       const totalWorkouts = totalResult.rows[0]?.cnt || 0;

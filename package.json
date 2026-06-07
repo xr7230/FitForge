@@ -1,7 +1,7 @@
-﻿{
+{
   "name": "fitforge",
   "scripts": {
-    "build": "cd apps/api && npm install && npm run build",
+    "build": "cd apps/api && npm install --include=dev && npm run build",
     "start": "cd apps/api && npm start"
   }
 }
