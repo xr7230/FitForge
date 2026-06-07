@@ -1,18 +1,12 @@
-FROM node:20-alpine
+﻿FROM node:20-slim
 
-RUN apk add --no-cache python3 make g++
+RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Build ID: 1780839300
 COPY apps/api/ .
 
-RUN grep -q "/ping" src/index.ts && echo "OK: ping in source" || (echo "MISSING from source!" && exit 1)
-
-RUN npm install && npm run build && npm prune --omit=dev
-
-# Debug: verify compiled output has ping
-RUN grep -q "/ping" dist/index.js && echo "OK: ping in compiled dist" || (echo "MISSING from compiled dist!" && cat dist/index.js | head -40 && exit 1)
+RUN npm install && npm run build
 
 EXPOSE 3001
 
