@@ -42,3 +42,9 @@ __pycache__/
 
 # Archive
 versions/
+# SQLite WAL files
+*.db-shm
+*.db-wal
+
+# Temp scripts
+write_settings.py
