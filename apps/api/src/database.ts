@@ -4,11 +4,7 @@ let _pool: any;
 let _redis: any;
 let _initDb: () => Promise<void>;
 
-if (USE_SQLITE) {
-  const BetterSqlite3 = require("better-sqlite3");
-  const path = require("path");
-
-  class MemCache {
+class MemCache {
     private store = new Map<string, { value: string; expiry: number | null }>();
     async set(key: string, value: string) { this.store.set(key, { value, expiry: null }); return "OK"; }
     async get(key: string): Promise<string | null> {
@@ -18,6 +14,10 @@ if (USE_SQLITE) {
     }
     async del(key: string) { this.store.delete(key); return 1; }
   }
+
+if (USE_SQLITE) {
+  const BetterSqlite3 = require("better-sqlite3");
+  const path = require("path");
 
   class SqlitePool {
     private db: any;
@@ -136,7 +136,13 @@ if (USE_SQLITE) {
   const Redis = require("ioredis");
 
   _pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
-  _redis = new Redis(process.env.REDIS_URL || "redis://localhost:6379");
+  const redisUrl = process.env.REDIS_URL;
+  if (redisUrl) {
+    _redis = new Redis(redisUrl);
+  } else {
+    console.log("REDIS_URL ??????????");
+    _redis = new MemCache();
+  }
 
   _initDb = async () => {
     try {
