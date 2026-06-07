@@ -1,20 +1,17 @@
 FROM node:20-alpine
 
-# Build tools for native modules (bcrypt)
 RUN apk add --no-cache python3 make g++
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY apps/api/package*.json ./
 
-# Install all deps (including devDeps for tsc build)
 RUN npm install
 
-COPY . .
+COPY apps/api/ .
 
 RUN npm run build
 
-# Remove devDeps to keep image small (optional)
 RUN npm prune --omit=dev
 
 EXPOSE 3001

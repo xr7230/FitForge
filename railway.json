@@ -1,10 +1,5 @@
 {
-  "build": {
-    "builder": "NIXPACKS",
-    "buildCommand": "cd apps/api && rm -rf dist node_modules && npm install --include=dev && npm run build"
-  },
   "deploy": {
-    "startCommand": "cd apps/api && npm start",
     "restartPolicyType": "ON_FAILURE"
   }
 }
