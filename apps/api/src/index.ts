@@ -27,6 +27,8 @@ const secret: string = JWT_SECRET!;
 const ALLOWED_ORIGINS = (process.env.CORS_ORIGINS || 'http://localhost:5173,http://localhost:3000')
   .split(',').map(s => s.trim()).filter(Boolean);
 const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+
+app.get('/ping', (_req: Request, res: Response) => { res.json({ pong: true, time: Date.now() }); });
 app.use(cors({
   origin: isDev ? true : (origin, callback) => {
     if (!origin || ALLOWED_ORIGINS.includes(origin)) {
