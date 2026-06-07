@@ -1,5 +1,8 @@
 {
   "name": "fitforge",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "cd apps/api && npm install --include=dev && npm run build",
     "start": "cd apps/api && npm start"
