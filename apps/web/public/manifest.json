@@ -1,0 +1,18 @@
+﻿{
+  "name": "FitForge - 健身搭子",
+  "short_name": "FitForge",
+  "description": "你的专属个人健身搭子——小铁",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#faf9f6",
+  "theme_color": "#f59e0b",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

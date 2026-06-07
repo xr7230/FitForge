@@ -1,0 +1,69 @@
+﻿version: '3.8'
+
+services:
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://api:3001
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    networks:
+      - fitforge-network
+
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - JWT_SECRET=fitforge-prod-change-me
+      - DATABASE_URL=postgres://fitforge:fitforge@postgres:5432/fitforge
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - fitforge-network
+
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=fitforge
+      - POSTGRES_USER=fitforge
+      - POSTGRES_PASSWORD=fitforge
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fitforge"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fitforge-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - fitforge-network
+
+volumes:
+  postgres-data:
+  redis-data:
+
+networks:
+  fitforge-network:
+    driver: bridge
