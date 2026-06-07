@@ -16,6 +16,9 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      LANG: en_US.UTF-8
+      LC_ALL: en_US.UTF-8
     steps:
       - uses: actions/checkout@v4
 
@@ -28,6 +31,8 @@ jobs:
           cd apps/web
           npm install
           npm run build
+          # Verify Chinese characters survived the build
+          grep -q "健身" dist/assets/index-*.js && echo "OK: Chinese OK" || (echo "FAIL: Chinese garbled!" && exit 1)
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
