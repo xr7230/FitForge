@@ -113,4 +113,4 @@ node dist/index.js
 
 ## 📄 License
 
-MIT
+**All Rights Reserved** — 仅限个人非商用学习。严禁商用、参赛、转载、篡改。详见 [LICENSE](./LICENSE)。
